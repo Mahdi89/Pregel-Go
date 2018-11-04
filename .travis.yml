@@ -1,0 +1,17 @@
+sudo: false
+
+language: go
+
+go:
+  - 1.10.x
+  - master
+
+env:
+  global: PROJECT_NAME="reco"
+
+install:
+- go get github.com/Masterminds/glide
+- make clean dependencies
+
+scripts: 
+- go test
