@@ -2,7 +2,7 @@
 
 # PageRank-pregel
 
-Pregel based (`Think as a Vertex`) realisation of the PageRank algorithm in Go language.
+Pregel based (`Think like a Vertex`) realisation of the PageRank algorithm in Go language.
 
 In this implementation there is one gopher spawned per vertex and the communication between the vertices is done via channels. Partitioning the graph into sub set of vertices is TBD. 
 
@@ -12,7 +12,7 @@ Currently the tested structure is a simple 6 node, 11 edge graph and the work fo
 
 ## References
 
-[Pregel: A System for Large-Scale Graph Processing](https://kowshik.github.io/JPregel/pregel_paper.pdf)
-
-
+- [Pregel: A System for Large-Scale Graph Processing](https://kowshik.github.io/JPregel/pregel_paper.pdf)
+- [Thinking Like a Vertex: A Survey of Vertex-Centric Frameworks for Large-Scale Distributed Graph Processing](https://dl.acm.org/citation.cfm?id=2818185)
+- The matrix-based implementation for testing the results is borrowed from: [Pregel](http://www.michaelnielsen.org/ddi/pregel/)
 
