@@ -7,11 +7,7 @@ go:
   - master
 
 env:
-  global: PROJECT_NAME="reco"
-
-install:
-- go get github.com/Masterminds/glide
-- make clean dependencies
+  global: PROJECT_NAME="pregel"
 
 scripts: 
 - go test
