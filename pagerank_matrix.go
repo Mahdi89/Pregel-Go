@@ -1,25 +1,11 @@
 // Matrix based calculation of PageRank
-package main
+package pagerank
 
 import (
-	"fmt"
 	mat "github.com/skelterjohn/go.matrix"
 )
 
-const NUM_VERTEX = 6
-const SUPER_STEPS = 10
-
-type Vertex struct {
-	Id             int
-	Value          float32
-	Out_vertices   []Vertex
-	Incoming_edges []chan float32
-	Outgoing_edges []chan float32
-	Active         bool
-	Superstep      int
-}
-
-func main() {
+func PageRank_Matrix() []float64 {
 	G := mat.Zeros(NUM_VERTEX, NUM_VERTEX)
 	I := mat.Eye(NUM_VERTEX)
 	v := [NUM_VERTEX]Vertex{}
@@ -62,5 +48,5 @@ func main() {
 		}
 	}
 	ret, _ := part.TimesDense(O)
-	fmt.Println(ret)
+	return ret.Array()
 }

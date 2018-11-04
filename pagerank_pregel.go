@@ -1,19 +1,18 @@
-package main
+package pagerank
 
 import (
-	"fmt"
 	"time"
 )
 
-var NUM_VERTEX = 6
-var SUPER_STEPS = 10
+const NUM_VERTEX = 6
+const SUPER_STEPS = 10
 
 type Vertex struct {
 	Id             int
-	Value          float32
+	Value          float64
 	Out_vertices   []Vertex
-	Incoming_edges []chan float32
-	Outgoing_edges []chan float32
+	Incoming_edges []chan float64
+	Outgoing_edges []chan float64
 	Active         bool
 	Superstep      int
 }
@@ -21,14 +20,14 @@ type Vertex struct {
 type Graph struct {
 	NumNodes int
 	Vertices []Vertex
-	Edges    []chan float32
+	Edges    []chan float64
 }
 
 // Sums up incoming values and updates the vertex value.
 // and passes the updated value to the neighbouring vertices.
 func PageRank(v *Vertex) {
 
-	sum := float32(0)
+	sum := float64(0)
 	for i := range v.Incoming_edges {
 		sum += <-v.Incoming_edges[i]
 	}
@@ -36,7 +35,7 @@ func PageRank(v *Vertex) {
 
 	len_out := len(v.Outgoing_edges)
 	for j := range v.Outgoing_edges {
-		v.Outgoing_edges[j] <- v.Value / float32(len_out)
+		v.Outgoing_edges[j] <- v.Value / float64(len_out)
 	}
 }
 
@@ -46,18 +45,18 @@ func MakeGraph(graphSize int) Graph {
 
 	g := Graph{}
 	g.NumNodes = graphSize
-	g.Edges = []chan float32{
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1),
-		make(chan float32, 1)}
+	g.Edges = []chan float64{
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1),
+		make(chan float64, 1)}
 
 	// Initialize the edges
 	g.Edges[0] <- 0.055
@@ -74,31 +73,33 @@ func MakeGraph(graphSize int) Graph {
 
 	g.Vertices = []Vertex{
 		// Initialize a set of Vertices
-		Vertex{Id: 0, Value: 0.166, Incoming_edges: []chan float32{}, Outgoing_edges: []chan float32{g.Edges[0], g.Edges[1], g.Edges[2]}, Active: true, Superstep: 0},
-		Vertex{Id: 1, Value: 0.166, Incoming_edges: []chan float32{g.Edges[0], g.Edges[4], g.Edges[7]}, Outgoing_edges: []chan float32{g.Edges[3]}, Active: true, Superstep: 0},
-		Vertex{Id: 2, Value: 0.166, Incoming_edges: []chan float32{g.Edges[1], g.Edges[8]}, Outgoing_edges: []chan float32{g.Edges[4], g.Edges[5]}, Active: true, Superstep: 0},
-		Vertex{Id: 3, Value: 0.166, Incoming_edges: []chan float32{g.Edges[2], g.Edges[3], g.Edges[5], g.Edges[9]}, Outgoing_edges: []chan float32{g.Edges[6]}, Active: true, Superstep: 0},
-		Vertex{Id: 4, Value: 0.166, Incoming_edges: []chan float32{}, Outgoing_edges: []chan float32{g.Edges[7], g.Edges[8], g.Edges[9]}, Active: true, Superstep: 0},
-		Vertex{Id: 5, Value: 0.166, Incoming_edges: []chan float32{g.Edges[10], g.Edges[6]}, Outgoing_edges: []chan float32{g.Edges[10]}, Active: true, Superstep: 0}}
+		Vertex{Id: 0, Value: 0.166, Incoming_edges: []chan float64{}, Outgoing_edges: []chan float64{g.Edges[0], g.Edges[1], g.Edges[2]}, Active: true, Superstep: 0},
+		Vertex{Id: 1, Value: 0.166, Incoming_edges: []chan float64{g.Edges[0], g.Edges[4], g.Edges[7]}, Outgoing_edges: []chan float64{g.Edges[3]}, Active: true, Superstep: 0},
+		Vertex{Id: 2, Value: 0.166, Incoming_edges: []chan float64{g.Edges[1], g.Edges[8]}, Outgoing_edges: []chan float64{g.Edges[4], g.Edges[5]}, Active: true, Superstep: 0},
+		Vertex{Id: 3, Value: 0.166, Incoming_edges: []chan float64{g.Edges[2], g.Edges[3], g.Edges[5], g.Edges[9]}, Outgoing_edges: []chan float64{g.Edges[6]}, Active: true, Superstep: 0},
+		Vertex{Id: 4, Value: 0.166, Incoming_edges: []chan float64{}, Outgoing_edges: []chan float64{g.Edges[7], g.Edges[8], g.Edges[9]}, Active: true, Superstep: 0},
+		Vertex{Id: 5, Value: 0.166, Incoming_edges: []chan float64{g.Edges[10], g.Edges[6]}, Outgoing_edges: []chan float64{g.Edges[10]}, Active: true, Superstep: 0}}
 	return g
 
 }
 
-func main() {
+func PageRank_Pregel() []float64 {
 
 	g := MakeGraph(6)
+	ret := make([]float64, NUM_VERTEX)
 
 	for i := 0; i < SUPER_STEPS; i++ {
 		// Spawns a gopher per vertex,
 		// partitioning the graph into set of vertices is TBD.
-		fmt.Printf("--------SuperStep %d -------------------------\n", i)
 		for i := range g.Vertices {
 			go PageRank(&g.Vertices[i])
 		}
 		// Wait for the gophers to stablize.
 		time.Sleep(time.Second)
-		for i := range g.Vertices {
-			fmt.Println(g.Vertices[i].Value)
-		}
 	}
+	for i := range g.Vertices {
+		ret[i] = g.Vertices[i].Value
+	}
+
+	return ret
 }
