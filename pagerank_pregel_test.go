@@ -24,3 +24,17 @@ func TestPageRank_Pregel(t *testing.T) {
 		t.Errorf("Expected %f got %f", expected, ret)
 	}
 }
+
+func BenchmarkPageRank_Pregel(b *testing.B) {
+        // run the function b.N times
+        for n := 0; n < b.N; n++ {
+                PageRank_Pregel()
+        }
+}
+
+func BenchmarkPageRank_Matrix(b *testing.B) {
+        // run the function b.N times
+        for n := 0; n < b.N; n++ {
+                PageRank_Matrix()
+        }
+}
