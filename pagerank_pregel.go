@@ -95,7 +95,7 @@ func PageRank_Pregel() []float64 {
 			go PageRank(&g.Vertices[i])
 		}
 		// Wait for the gophers to stablize.
-		time.Sleep(time.Second)
+		time.Sleep(time.Nanosecond)
 	}
 	for i := range g.Vertices {
 		ret[i] = g.Vertices[i].Value
