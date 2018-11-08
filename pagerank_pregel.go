@@ -5,7 +5,7 @@ import (
 )
 
 const NUM_VERTEX = 6
-const SUPER_STEPS = 10
+const SUPER_STEPS = 5
 
 type Vertex struct {
 	Id             int

@@ -16,9 +16,9 @@ Simply try `go test -bench=.` to check performance of the implemented versions u
 
 ```
 PASS
-BenchmarkPageRank_Pregel-4	   50000	     29100 ns/op
-BenchmarkPageRank_Matrix-4	  200000	      6626 ns/op
-BenchmarkPageRank_Stream-4	  200000	     10917 ns/op
+BenchmarkPageRank_Pregel-4	  100000	     16046 ns/op
+BenchmarkPageRank_Matrix-4	  200000	      6831 ns/op
+BenchmarkPageRank_Stream-4	  200000	     10584 ns/op
 ```
 
 ## References
