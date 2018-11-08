@@ -10,6 +10,17 @@ Unlike the matrix based implementation (`see pagerank_matrix.go`), which is used
 
 Currently the tested structure is a simple 6 node, 11 edge graph and the work for implementing random structures such as ones suggested by graph nets is WIP.  
 
+## Test & Benchmark 
+
+Simply try `go test -bench=.` to check performance of the implemented versions using Go's test machinary.  
+
+```
+PASS
+BenchmarkPageRank_Pregel-4	   50000	     29100 ns/op
+BenchmarkPageRank_Matrix-4	  200000	      6626 ns/op
+BenchmarkPageRank_Stream-4	  200000	     10917 ns/op
+```
+
 ## References
 
 - [Pregel: A System for Large-Scale Graph Processing](https://kowshik.github.io/JPregel/pregel_paper.pdf)
