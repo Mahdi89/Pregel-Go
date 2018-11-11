@@ -2,29 +2,64 @@
 package pagerank
 
 import (
+	// 	"fmt"
 	mat "github.com/skelterjohn/go.matrix"
+	"math/rand"
+	//	"time"
 )
 
+//var NUM_VERTEX = 6
+//var SUPER_STEPS = 5
+/*
+type Vertex struct {
+	Id             int
+	Value          float64
+	Out_vertices   []Vertex
+	Incoming_edges []chan float64
+	Outgoing_edges []chan float64
+	Active         bool
+	Superstep      int
+}
+
+type Graph struct {
+	NumNodes int
+	Vertices []Vertex
+	Edges    []chan float64
+}*/
+
 func PageRank_Matrix() []float64 {
+	//func main() {
+
+	// Produce a random number with a deterministic seed
+	s := rand.NewSource(123)
+	r := rand.New(s)
+	num := r.Intn(1000)
+
+	NUM_VERTEX := num
+
 	G := mat.Zeros(NUM_VERTEX, NUM_VERTEX)
 	I := mat.Eye(NUM_VERTEX)
-	v := [NUM_VERTEX]Vertex{}
+	v := make([]Vertex, NUM_VERTEX)
 
 	// Initialize the set of Vertices
-	v[0] = Vertex{Id: 0, Value: 0.166, Active: true, Superstep: 0}
-	v[1] = Vertex{Id: 1, Value: 0.166, Active: true, Superstep: 0}
-	v[2] = Vertex{Id: 2, Value: 0.166, Active: true, Superstep: 0}
-	v[3] = Vertex{Id: 3, Value: 0.166, Active: true, Superstep: 0}
-	v[4] = Vertex{Id: 4, Value: 0.166, Active: true, Superstep: 0}
-	v[5] = Vertex{Id: 5, Value: 0.166, Active: true, Superstep: 0}
+	for i := 0; i < NUM_VERTEX; i++ {
 
-	v[0].Out_vertices = []Vertex{v[1], v[2], v[3]}
-	v[1].Out_vertices = []Vertex{v[3]}
-	v[2].Out_vertices = []Vertex{v[1], v[3]}
-	v[3].Out_vertices = []Vertex{v[5]}
-	v[4].Out_vertices = []Vertex{v[1], v[2], v[3]}
-	v[5].Out_vertices = []Vertex{v[5]}
+		v[i] = Vertex{Id: i, Value: 1.0 / float64(NUM_VERTEX), Out_vertices: []Vertex{v[r.Intn(NUM_VERTEX)], v[r.Intn(NUM_VERTEX)], v[r.Intn(NUM_VERTEX)], v[r.Intn(NUM_VERTEX)]}, Active: true, Superstep: 0}
+	}
+	// Assign the out-vertices after init
+	for i := 0; i < NUM_VERTEX; i++ {
 
+		v[i].Out_vertices = []Vertex{v[r.Intn(NUM_VERTEX)], v[r.Intn(NUM_VERTEX)]}
+	}
+
+	/*	// Pretty print the adjacency list
+		for i := 0; i < NUM_VERTEX; i++ {
+			for j := range v[i].Out_vertices {
+				fmt.Print(v[i].Out_vertices[j].Id)
+			}
+			fmt.Println()
+		}
+	*/
 	for i := 0; i < NUM_VERTEX; i++ {
 		num_out_vertices := len(v[i].Out_vertices)
 		for j := range v[i].Out_vertices {

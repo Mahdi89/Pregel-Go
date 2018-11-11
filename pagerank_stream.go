@@ -1,10 +1,13 @@
 package pagerank
 
-import ()
+import (
+	"math/rand"
+	//	"time"
+)
 
 type Edge struct {
-	Id          int
-	Value       float64
+	Id           int
+	Value        float64
 	Src_Vertex_  Vertex_
 	Dist_Vertex_ Vertex_
 }
@@ -47,36 +50,30 @@ func MakeGraph_(Graph_Size int) Graph_ {
 
 	g := Graph_{}
 	g.NumNodes = Graph_Size
-	g.Edges = make([]Edge, 11)
+	g.Edges = make([]Edge, Graph_Size*4)
+	g.Vertices = make([]Vertex_, Graph_Size)
 
-	// Initialize the edges
-	g.Edges[0].Value = 0.055
-	g.Edges[1].Value = 0.055
-	g.Edges[2].Value = 0.055
-	g.Edges[3].Value = 0.166
-	g.Edges[4].Value = 0.083
-	g.Edges[5].Value = 0.083
-	g.Edges[6].Value = 0.166
-	g.Edges[7].Value = 0.055
-	g.Edges[8].Value = 0.055
-	g.Edges[9].Value = 0.055
-	g.Edges[10].Value = 0.166
+	// Initialize the set of Vertices
+	for i := 0; i < Graph_Size; i++ {
 
-	g.Vertices = []Vertex_{
-		// Initialize a set of Vertices
-		Vertex_{Id: 0, Value: 0.166, Incoming_edges: []Edge{}, Outgoing_edges: []Edge{g.Edges[0], g.Edges[1], g.Edges[2]}, Active: true, Superstep: 0},
-		Vertex_{Id: 1, Value: 0.166, Incoming_edges: []Edge{g.Edges[0], g.Edges[4], g.Edges[7]}, Outgoing_edges: []Edge{g.Edges[3]}, Active: true, Superstep: 0},
-		Vertex_{Id: 2, Value: 0.166, Incoming_edges: []Edge{g.Edges[1], g.Edges[8]}, Outgoing_edges: []Edge{g.Edges[4], g.Edges[5]}, Active: true, Superstep: 0},
-		Vertex_{Id: 3, Value: 0.166, Incoming_edges: []Edge{g.Edges[2], g.Edges[3], g.Edges[5], g.Edges[9]}, Outgoing_edges: []Edge{g.Edges[6]}, Active: true, Superstep: 0},
-		Vertex_{Id: 4, Value: 0.166, Incoming_edges: []Edge{}, Outgoing_edges: []Edge{g.Edges[7], g.Edges[8], g.Edges[9]}, Active: true, Superstep: 0},
-		Vertex_{Id: 5, Value: 0.166, Incoming_edges: []Edge{g.Edges[10], g.Edges[6]}, Outgoing_edges: []Edge{g.Edges[10]}, Active: true, Superstep: 0}}
+		s := rand.NewSource(123)
+		r := rand.New(s)
+		g.Vertices[i] = Vertex_{Id: i, Value: 1.0 / float64(Graph_Size), Incoming_edges: []Edge{g.Edges[r.Intn(Graph_Size)], g.Edges[r.Intn(Graph_Size)]}, Outgoing_edges: []Edge{g.Edges[r.Intn(Graph_Size)], g.Edges[r.Intn(Graph_Size)]}, Active: true, Superstep: 0}
+	}
+
 	return g
 
 }
 
 func PageRank_Stream() []float64 {
 
-	g := MakeGraph_(6)
+	// Produce a random number with a deterministic seed
+	s := rand.NewSource(123)
+	r := rand.New(s)
+	num := r.Intn(1000)
+
+	NUM_VERTEX := num
+	g := MakeGraph_(NUM_VERTEX)
 	ret := make([]float64, NUM_VERTEX)
 
 	for i := 0; i < SUPER_STEPS; i++ {

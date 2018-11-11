@@ -1,6 +1,7 @@
 package pagerank
 
 import (
+	"math/rand"
 	"time"
 )
 
@@ -45,47 +46,31 @@ func MakeGraph(graphSize int) Graph {
 
 	g := Graph{}
 	g.NumNodes = graphSize
-	g.Edges = []chan float64{
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1),
-		make(chan float64, 1)}
 
-	// Initialize the edges
-	g.Edges[0] <- 0.055
-	g.Edges[1] <- 0.055
-	g.Edges[2] <- 0.055
-	g.Edges[3] <- 0.166
-	g.Edges[4] <- 0.083
-	g.Edges[5] <- 0.083
-	g.Edges[6] <- 0.166
-	g.Edges[7] <- 0.055
-	g.Edges[8] <- 0.055
-	g.Edges[9] <- 0.055
-	g.Edges[10] <- 0.166
+	g.Edges = make([]chan float64, graphSize*4)
+	g.Vertices = make([]Vertex, graphSize)
 
-	g.Vertices = []Vertex{
-		// Initialize a set of Vertices
-		Vertex{Id: 0, Value: 0.166, Incoming_edges: []chan float64{}, Outgoing_edges: []chan float64{g.Edges[0], g.Edges[1], g.Edges[2]}, Active: true, Superstep: 0},
-		Vertex{Id: 1, Value: 0.166, Incoming_edges: []chan float64{g.Edges[0], g.Edges[4], g.Edges[7]}, Outgoing_edges: []chan float64{g.Edges[3]}, Active: true, Superstep: 0},
-		Vertex{Id: 2, Value: 0.166, Incoming_edges: []chan float64{g.Edges[1], g.Edges[8]}, Outgoing_edges: []chan float64{g.Edges[4], g.Edges[5]}, Active: true, Superstep: 0},
-		Vertex{Id: 3, Value: 0.166, Incoming_edges: []chan float64{g.Edges[2], g.Edges[3], g.Edges[5], g.Edges[9]}, Outgoing_edges: []chan float64{g.Edges[6]}, Active: true, Superstep: 0},
-		Vertex{Id: 4, Value: 0.166, Incoming_edges: []chan float64{}, Outgoing_edges: []chan float64{g.Edges[7], g.Edges[8], g.Edges[9]}, Active: true, Superstep: 0},
-		Vertex{Id: 5, Value: 0.166, Incoming_edges: []chan float64{g.Edges[10], g.Edges[6]}, Outgoing_edges: []chan float64{g.Edges[10]}, Active: true, Superstep: 0}}
+	// Initialize the set of Vertices
+	for i := 0; i < graphSize; i++ {
+
+		s := rand.NewSource(123)
+		r := rand.New(s)
+		g.Vertices[i] = Vertex{Id: i, Value: 1.0 / float64(graphSize), Incoming_edges: []chan float64{g.Edges[r.Intn(graphSize)], g.Edges[r.Intn(graphSize)]}, Outgoing_edges: []chan float64{g.Edges[r.Intn(graphSize)], g.Edges[r.Intn(graphSize)]}, Active: true, Superstep: 0}
+	}
+
 	return g
 
 }
 
 func PageRank_Pregel() []float64 {
 
-	g := MakeGraph(6)
+	// Produce a random number with a deterministic seed
+	s := rand.NewSource(123)
+	r := rand.New(s)
+	num := r.Intn(1000)
+
+	NUM_VERTEX := num
+	g := MakeGraph(NUM_VERTEX)
 	ret := make([]float64, NUM_VERTEX)
 
 	for i := 0; i < SUPER_STEPS; i++ {
