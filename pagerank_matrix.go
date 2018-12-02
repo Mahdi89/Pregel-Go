@@ -2,16 +2,12 @@
 package pagerank
 
 import (
-	// 	"fmt"
 	mat "github.com/skelterjohn/go.matrix"
 	"math/rand"
 	//	"time"
 )
 
-//var NUM_VERTEX = 6
-//var SUPER_STEPS = 5
-/*
-type Vertex struct {
+/*type Vertex struct {
 	Id             int
 	Value          float64
 	Out_vertices   []Vertex
@@ -25,17 +21,9 @@ type Graph struct {
 	NumNodes int
 	Vertices []Vertex
 	Edges    []chan float64
-}*/
-
+}
+*/
 func PageRank_Matrix() []float64 {
-	//func main() {
-
-	// Produce a random number with a deterministic seed
-	s := rand.NewSource(123)
-	r := rand.New(s)
-	num := r.Intn(1000)
-
-	NUM_VERTEX := num
 
 	G := mat.Zeros(NUM_VERTEX, NUM_VERTEX)
 	I := mat.Eye(NUM_VERTEX)
@@ -44,16 +32,25 @@ func PageRank_Matrix() []float64 {
 	// Initialize the set of Vertices
 	for i := 0; i < NUM_VERTEX; i++ {
 
-		v[i] = Vertex{Id: i, Value: 1.0 / float64(NUM_VERTEX), Out_vertices: []Vertex{v[r.Intn(NUM_VERTEX)], v[r.Intn(NUM_VERTEX)], v[r.Intn(NUM_VERTEX)], v[r.Intn(NUM_VERTEX)]}, Active: true, Superstep: 0}
+		v[i] = Vertex{Id: i, Value: 1.0 / float64(NUM_VERTEX), Active: true, Superstep: 0}
 	}
+
+	s := rand.NewSource(123456789)
+	r := rand.New(s)
+	l := r.Perm(NUM_VERTEX)
+	// Just make sure there are enough random vertexIDs
+	l = append(l, l[:CONN_DEGREE]...)
+
 	// Assign the out-vertices after init
 	for i := 0; i < NUM_VERTEX; i++ {
+		for j := 0; j < CONN_DEGREE; j++ {
 
-		v[i].Out_vertices = []Vertex{v[r.Intn(NUM_VERTEX)], v[r.Intn(NUM_VERTEX)]}
+			v[i].Out_vertices = append(v[i].Out_vertices, v[l[i+j]])
+		}
 	}
 
-	/*	// Pretty print the adjacency list
-		for i := 0; i < NUM_VERTEX; i++ {
+	// Pretty print the adjacency list
+	/*	for i := 0; i < NUM_VERTEX; i++ {
 			for j := range v[i].Out_vertices {
 				fmt.Print(v[i].Out_vertices[j].Id)
 			}
@@ -82,6 +79,7 @@ func PageRank_Matrix() []float64 {
 			part.Set(i, j, part.Get(i, j)*0.15)
 		}
 	}
+
 	ret, _ := part.TimesDense(O)
 	return ret.Array()
 }
