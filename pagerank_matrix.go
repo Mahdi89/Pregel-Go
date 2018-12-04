@@ -4,25 +4,8 @@ package pagerank
 import (
 	mat "github.com/skelterjohn/go.matrix"
 	"math/rand"
-	//	"time"
 )
 
-/*type Vertex struct {
-	Id             int
-	Value          float64
-	Out_vertices   []Vertex
-	Incoming_edges []chan float64
-	Outgoing_edges []chan float64
-	Active         bool
-	Superstep      int
-}
-
-type Graph struct {
-	NumNodes int
-	Vertices []Vertex
-	Edges    []chan float64
-}
-*/
 func PageRank_Matrix() []float64 {
 
 	G := mat.Zeros(NUM_VERTEX, NUM_VERTEX)
@@ -48,15 +31,6 @@ func PageRank_Matrix() []float64 {
 			v[i].Out_vertices = append(v[i].Out_vertices, v[l[i+j]])
 		}
 	}
-
-	// Pretty print the adjacency list
-	/*	for i := 0; i < NUM_VERTEX; i++ {
-			for j := range v[i].Out_vertices {
-				fmt.Print(v[i].Out_vertices[j].Id)
-			}
-			fmt.Println()
-		}
-	*/
 	for i := 0; i < NUM_VERTEX; i++ {
 		num_out_vertices := len(v[i].Out_vertices)
 		for j := range v[i].Out_vertices {
