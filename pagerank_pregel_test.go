@@ -25,7 +25,7 @@ func TestPageRank_Pregel(t *testing.T) {
 	}
 }
 
-/*
+
 func TestPageRank_Stream(t *testing.T) {
 
 	// Expected return vector
@@ -44,7 +44,7 @@ func TestPageRank_Stream(t *testing.T) {
 	if math.Abs(ret_sum-expected_sum) > 0.01 {
 		t.Errorf("Expected %f got %f", expected, ret)
 	}
-}*/
+}
 
 func BenchmarkPageRank_Pregel(b *testing.B) {
 	// run the function b.N times
