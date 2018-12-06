@@ -2,6 +2,7 @@ package pagerank
 
 import (
 	"math"
+	"runtime"
 	"testing"
 )
 
@@ -25,7 +26,6 @@ func TestPageRank_Pregel(t *testing.T) {
 	}
 }
 
-
 func TestPageRank_Stream(t *testing.T) {
 
 	// Expected return vector
@@ -47,6 +47,7 @@ func TestPageRank_Stream(t *testing.T) {
 }
 
 func BenchmarkPageRank_Pregel(b *testing.B) {
+	runtime.GC()
 	// run the function b.N times
 	for n := 0; n < b.N; n++ {
 		PageRank_Pregel()
@@ -54,6 +55,7 @@ func BenchmarkPageRank_Pregel(b *testing.B) {
 }
 
 func BenchmarkPageRank_Matrix(b *testing.B) {
+	runtime.GC()
 	// run the function b.N times
 	for n := 0; n < b.N; n++ {
 		PageRank_Matrix()
@@ -61,6 +63,7 @@ func BenchmarkPageRank_Matrix(b *testing.B) {
 }
 
 func BenchmarkPageRank_Stream(b *testing.B) {
+	runtime.GC()
 	// run the function b.N times
 	for n := 0; n < b.N; n++ {
 		PageRank_Stream()
