@@ -4,11 +4,6 @@ import (
 	"math/rand"
 )
 
-// Set high-level meta parameters
-const SUPER_STEPS = 100
-const CONN_DEGREE = 5
-const NUM_VERTEX = 10
-
 type Vertex struct {
 	Id             int
 	Value          float64
