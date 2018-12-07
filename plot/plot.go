@@ -52,22 +52,27 @@ func main() {
 
 	pts0 := make(plotter.XYs, n)
 	pts1 := make(plotter.XYs, n)
+	pts2 := make(plotter.XYs, n)
 
 	for i := 0; i < n; i++ {
 
 		pts0[i].X = float64(i)
 		pts1[i].X = float64(i)
+		pts2[i].X = float64(i)
 	}
 
 	for i := 0; i < n; i++ {
 
 		pts0[i].Y = float64(set["BenchmarkPageRank_Pregel-4"][i].NsPerOp)
 		pts1[i].Y = float64(set["BenchmarkPageRank_Matrix-4"][i].NsPerOp)
+		pts2[i].Y = float64(set["BenchmarkPageRank_Stream-4"][i].NsPerOp)
+
 	}
 
 	err = plotutil.AddLinePoints(p,
 		"Pregel", pts0,
-		"Matrix", pts1)
+		"Matrix", pts1,
+		"Stream", pts2)
 	if err != nil {
 		panic(err)
 	}
