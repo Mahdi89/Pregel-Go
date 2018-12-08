@@ -40,7 +40,18 @@ Currently `graph.go` is capable of generating random graphs with `Size` and `Deg
 
 ### Memory footprint
 
+TBD<p align="center">
+  <img src="https://github.com/Mahdi89/PageRank-pregel/blob/master/plot/bench_mem_6_5.out.png" width="280" title="Size_it= 6 and degree 5">
+  <img src="https://github.com/Mahdi89/PageRank-pregel/blob/master/plot/bench_mem_7_5.out.png" width="280" title="Size_it= 7 and degree 3">
+  <img src="https://github.com/Mahdi89/PageRank-pregel/blob/master/plot/bench_mem_7_6.out.png" width="280" title="Size_it= 7 and degree 4">
+</p>
+
+### Energy usage
+
 TBD
+
+
+
 
 ## References
 
