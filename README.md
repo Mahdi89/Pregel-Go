@@ -22,6 +22,21 @@ PASS
 ok      _/PageRank-pregel    8.118s
 ```
 
+*Above figures correspond to a machine with following config:
+
+```
+processor       : 0-3
+vendor_id       : GenuineIntel
+cpu family      : 6
+model           : 58
+model name      : Intel(R) Core(TM) i7-3667U CPU @ 2.00GHz
+stepping        : 9
+microcode       : 0x20
+cpu MHz         : 2596.236
+cache size      : 4096 KB
+
+```
+
 ## Plots
 
 Currently `graph.go` is capable of generating random graphs with `Size` and `Degree of Sparsity` parameters as input. Later, we are going to support external graph import. To investigate performnace and memory behaviour of the implemented algorithms (namely pregel, matrix and stream) we have incorporated a plotting mechanism as following:
