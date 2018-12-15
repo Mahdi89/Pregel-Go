@@ -1,16 +1,15 @@
 [![Build Status](https://travis-ci.com/Mahdi89/PageRank-pregel.svg?branch=master)](https://travis-ci.com/Mahdi89/PageRank-pregel)
 
-# PageRank-pregel
+# Pregel-Go
 
-Pregel based (`Think like a Vertex`) realisation of the PageRank algorithm in Go language.
+Pregel based (`Think like a Vertex`) realisation of a set of graph processing algorithms in Go language.
 
-In this implementation there is one gopher spawned per vertex and the communication between the vertices is done via channels. Partitioning the graph into sub set of vertices is TBD. 
-
-Unlike the matrix based implementation (`see pagerank_matrix.go`), which is used for testing the Pregel implementation of PageRank, the message passing based model of Pregel allows processing of large-scale Grpahs.
+e.g in PageRank's implementation there is one gopher spawned per vertex and the communication between the vertices is done via channels. It is benchmarked against single threaded- (pipelined) and matrix- based implementations. Partitioning the graph into sub set of vertices is TBD. 
+Unlike the matrix based implementation (`see pagerank_matrix.go`), which is used for testing the Pregel implementation of PageRank, the message passing based model of Pregel is considered to allow processing of large-scale Grpahs.
 
 ## Test & Benchmark 
 
-Simply try `go test -run=5 -bench=. -benchmem` to check performance of the implemented versions using Go's test machinary.  
+Simply try `make bench && cat ./pagerank/bench.out` from `$project_root` to check performance of the implemented versions using Go's test machinary.  
 
 ```
 goos: linux
@@ -43,7 +42,7 @@ Currently `graph.go` is capable of generating random graphs with `Size` and `Deg
 
 `$project_root/bin/bench.sh [SIZE_ITERATIONS] [CONNECTIVITY_DEGREE]` (where `SIZE_ITERATIONS` indicates range of graph sizes to be considered for benchmarking, e.g. `SIZE_ITERATIONS = 7` will produce graphs of size 5, 10, ... 35).
 
-`$project_root/bin/plot.sh [SIZE_ITERATIONS]` yields plots stored in `$project_root/plot`.
+`$project_root/bin/plot.sh [<DIR_to_bench.out>] [SIZE_ITERATIONS]` yields plots stored in `$project_root/plot`.
 
 ### Performance 
 
@@ -55,7 +54,7 @@ Currently `graph.go` is capable of generating random graphs with `Size` and `Deg
 
 ### Memory footprint
 
-TBD<p align="center">
+<p align="center">
   <img src="https://github.com/Mahdi89/PageRank-pregel/blob/master/plot/bench_mem_6_5.out.png" width="280" title="Size_it= 6 and degree 5">
   <img src="https://github.com/Mahdi89/PageRank-pregel/blob/master/plot/bench_mem_7_5.out.png" width="280" title="Size_it= 7 and degree 3">
   <img src="https://github.com/Mahdi89/PageRank-pregel/blob/master/plot/bench_mem_7_6.out.png" width="280" title="Size_it= 7 and degree 4">
