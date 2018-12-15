@@ -10,4 +10,5 @@ env:
   global: PROJECT_NAME="pregel"
 
 scripts: 
-- go test
+- make bench
+- make plot
