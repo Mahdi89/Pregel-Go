@@ -27,7 +27,7 @@ func randomPoints(n int) plotter.XYs {
 
 func main() {
 
-	f, err := os.Open("../bench.out")
+	f, err := os.Open(os.Args[1])
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +45,7 @@ func main() {
 	p.X.Label.Text = "Graph Size"
 	p.Y.Label.Text = "Operations/s"
 
-	n, err := strconv.Atoi(os.Args[1])
+	n, err := strconv.Atoi(os.Args[2])
 	if err != nil {
 		panic(err)
 	}

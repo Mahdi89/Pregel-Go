@@ -1,6 +1,6 @@
 #!/bin/bash
  
-root=$Pregel_Project_root
+root=$Project_root
 plot_path=$root/plot
 conf_file=config.go
 out_file=bench.out

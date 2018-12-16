@@ -9,5 +9,7 @@ go:
 env:
   global: PROJECT_NAME="pregel"
 
-scripts: 
-- go test
+scripts:
+- make install 
+- make bench
+- make plot
