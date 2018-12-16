@@ -4,7 +4,7 @@ DESC := Pregel-based graph processing suite
 .PHONY: install clean bench plot
 
 install:
-- go get -t github.com/skelterjohn/go.matrix
+	go get -t github.com/skelterjohn/go.matrix
 
 test: test_pagerank
 
