@@ -1,4 +1,3 @@
-// Matrix based calculation of PageRank
 package pagerank
 
 import (
