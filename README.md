@@ -7,6 +7,8 @@ Pregel based (`Think like a Vertex`) realisation of a set of graph processing al
 e.g in PageRank's implementation there is one gopher spawned per vertex and the communication between the vertices is done via channels. It is benchmarked against single threaded- (pipelined) and matrix- based implementations. Partitioning the graph into sub set of vertices is TBD. 
 Unlike the matrix based implementation (`see pagerank_matrix.go`), which is used for testing the Pregel implementation of PageRank, the message passing based model of Pregel is considered to allow processing of large-scale Grpahs.
 
+[WIP] There are several implementations of shortest path which are generally based on _Relaxation_. We have implemented SP taking Dijkstra's algorithm into account. 
+
 ## Test & Benchmark 
 
 Simply try `make bench && cat ./pagerank/bench.out` from `$project_root` to check performance of the implemented versions using Go's test machinary.  
