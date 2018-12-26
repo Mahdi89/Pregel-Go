@@ -1,7 +1,7 @@
 package shortpath
 
 import (
-	"reflect"
+	//	"reflect"
 	"runtime"
 	"testing"
 )
@@ -9,14 +9,15 @@ import (
 func TestShortPath_Dijkstra(t *testing.T) {
 
 	// Expected return vector from Dijkstra algorithm
-	expected_path, expected_val := ShortPath_Dijkstra()
+	_, expected_val := ShortPath_Dijkstra("a", "c")
 	// Returned from the X implementation
-	ret_path := []string{"a", "b", "c"}
-	ret_val := 40
+	_, ret_val := ShortPath_Pregel("a", "c")
 
-	if !reflect.DeepEqual(expected_path, ret_path) {
-		t.Errorf("expected %v but got %v", expected_path, ret_path)
-	}
+	// TODO Disable 'path' return
+	/*	if !reflect.DeepEqual(expected_path, ret_path) {
+			t.Errorf("expected %v but got %v", expected_path, ret_path)
+		}
+	*/
 	if expected_val != ret_val {
 		t.Errorf("expected %d but got %d", expected_val, ret_val)
 	}
@@ -27,6 +28,13 @@ func BenchmarkShortPath_Dijkstra(b *testing.B) {
 	runtime.GC()
 	// run the function b.N times
 	for n := 0; n < b.N; n++ {
-		ShortPath_Dijkstra()
+		ShortPath_Dijkstra("a", "c")
+	}
+}
+func BenchmarkShortPath_Pregel(b *testing.B) {
+	runtime.GC()
+	// run the function b.N times
+	for n := 0; n < b.N; n++ {
+		ShortPath_Pregel("a", "c")
 	}
 }
