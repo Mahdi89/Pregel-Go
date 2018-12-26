@@ -8,16 +8,24 @@ type Vertex struct {
 	Id             int
 	Value          float64
 	Out_vertices   []Vertex
-	Incoming_edges []chan float64
-	Outgoing_edges []chan float64
+	Incoming_edges []chan Msg
+	Outgoing_edges []chan Msg
 	Active         bool
 	Superstep      int
+}
+
+type Msg struct {
+	Id     int
+	Src    Vertex
+	Dist   Vertex
+	Value  float64
+	Weight float64
 }
 
 type Graph struct {
 	NumNodes int
 	Vertices []Vertex
-	Edges    []chan float64
+	Edges    []chan Msg
 }
 
 // Makes a random graph
@@ -27,14 +35,14 @@ func MakeGraph(graphSize int) Graph {
 	g := Graph{}
 	g.NumNodes = graphSize
 
-	g.Edges = make([]chan float64, graphSize*CONN_DEGREE)
+	g.Edges = make([]chan Msg, graphSize*CONN_DEGREE)
 	g.Vertices = make([]Vertex, graphSize)
 
 	// Initialize the edges
 	for i := 0; i < graphSize*CONN_DEGREE; i++ {
 
-		g.Edges[i] = make(chan float64, 1)
-		g.Edges[i] <- float64(1 / (graphSize * CONN_DEGREE))
+		g.Edges[i] = make(chan Msg, 1)
+		g.Edges[i] <- Msg{Value: float64(1 / (graphSize * CONN_DEGREE))}
 	}
 
 	// Initialize the Vertix set
