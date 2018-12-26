@@ -63,8 +63,8 @@ func MakeGraph(graphSize int) Graph {
 		for j := 0; j < CONN_DEGREE; j++ {
 
 			g.Vertices[i].Out_vertices = append(g.Vertices[i].Out_vertices, g.Vertices[l[i+j]])
-			g.Vertices[i].Outgoing_edges = append(g.Vertices[i].Outgoing_edges, g.Edges[i+j])
-			g.Vertices[l[i+j]].Incoming_edges = append(g.Vertices[l[i+j]].Incoming_edges, g.Edges[i+j])
+			g.Vertices[i].Outgoing_edges = append(g.Vertices[i].Outgoing_edges, g.Edges[i*CONN_DEGREE+j])
+			g.Vertices[l[i+j]].Incoming_edges = append(g.Vertices[l[i+j]].Incoming_edges, g.Edges[i*CONN_DEGREE+j])
 		}
 	}
 	return g
